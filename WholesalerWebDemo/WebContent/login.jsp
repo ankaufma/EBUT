@@ -18,7 +18,7 @@
 <form name="loginForm" method="post" action="<%= response.encodeURL("controllerservlet") %>" >
 <input type="hidden" name="action" value="login">
 <table>
-<tr><td>Username:</td><td><input name="username" value="" /></td></tr>
+<tr><td>UUUUUsername:</td><td><input name="username" value="" /></td></tr>
 <tr><td>Password:</td><td><input name="password" type="password" value=""></td></tr>
 <tr><td>Role:</td><td>
 <select name="role" size="1">
