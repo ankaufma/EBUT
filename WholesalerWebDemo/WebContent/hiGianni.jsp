@@ -13,6 +13,6 @@
 <%@ include file="header.jsp" %>
 <%@ include file="error.jsp" %>
 
-<h1>Hi Gianni!!!</h1>
+<h1>Hi Andi!!!</h1>
 </body>
 </html>
