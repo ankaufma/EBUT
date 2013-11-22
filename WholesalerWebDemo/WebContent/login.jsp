@@ -45,5 +45,9 @@ Username: <a href="<%= response.encodeURL("controllerservlet?action=login&role=3
 Username: <a href="<%= response.encodeURL("controllerservlet?action=login&role=3&username=supplier2&password=supplier2") %>"><i>supplier2</i></a> and password: <i>supplier2</i><br>
 </p>
 </form>
+<form name="hiGianni" method="post" action="<%= response.encodeURL("controllerservlet") %>" >
+	<input type="hidden" name="action" value="hiGianni">
+	<input type="submit" name="Submit" value="Grüß Gianni!">
+</form>
 </body>
 </html>
