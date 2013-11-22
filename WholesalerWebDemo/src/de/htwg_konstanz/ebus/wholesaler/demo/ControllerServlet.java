@@ -121,6 +121,7 @@ public class ControllerServlet extends HttpServlet
 
 		// get the action request parameter
 		String actionParam = request.getParameter(Constants.PARAM_NAME_ACTION);
+
 		// dispatch the action 
 		if (actionParam != null)
 		{			

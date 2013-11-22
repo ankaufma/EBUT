@@ -2,9 +2,6 @@ package de.htwg_konstanz.ebus.wholesaler.demo.util;
 
 public class Constants 
 {
-	//Greet Gianni
-	public static final String ACTION_GREET_GIANNI = "hiGianni";
-	
 	// XML schemata files
 	public static final String XML_SCHEMA_BMECAT = "bmecat_new_catalog_1_2_simple_eps_V0.96.xsd";
 	public static final String XML_SCHEMA_OPENTRANS = "openTRANS_1_0.xsd";
