@@ -39,10 +39,43 @@
 		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>AllProducts</display-name>
+		<servlet-name>AllProducts</servlet-name>
+		<servlet-class>de.htwg_konstanz.ebus.wholesaler.main.AllProducts</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>ExportAllArticles</display-name>
+		<servlet-name>ExportAllArticles</servlet-name>
+		<servlet-class>de.htwg_konstanz.ebus.wholesaler.action.ExportAllArticles</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>convertToBMECat</display-name>
+		<servlet-name>convertToBMECat</servlet-name>
+		<servlet-class>de.htwg_konstanz.ebus.wholesaler.main.convertToBMECat</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>OrderServicePort</servlet-name>
 		<url-pattern>/OrderService</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AllProducts</servlet-name>
+		<url-pattern>/AllProducts</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ExportAllArticles</servlet-name>
+		<url-pattern>/ExportAllArticles</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>convertToBMECat</servlet-name>
+		<url-pattern>/convertToBMECat</url-pattern>
 	</servlet-mapping>
 
   <welcome-file-list>

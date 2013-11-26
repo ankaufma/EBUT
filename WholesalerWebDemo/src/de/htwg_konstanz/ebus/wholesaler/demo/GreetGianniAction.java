@@ -11,7 +11,7 @@ public class GreetGianniAction implements IAction {
 
 	@Override
 	public String execute(HttpServletRequest request,
-			HttpServletResponse response, ArrayList<String> errorList) {
+			HttpServletResponse response, ArrayList<String> errorList) { 
 		return "hiGianni.jsp";
 	}
 

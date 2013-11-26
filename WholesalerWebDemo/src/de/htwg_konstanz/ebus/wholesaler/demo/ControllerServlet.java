@@ -72,6 +72,7 @@ public class ControllerServlet extends HttpServlet
 	{
 		// load all classes (actions) which implement the IAction interface 
 		actionList = (ArrayList<IAction>)ClassFinderUtil.findAll("de.htwg_konstanz.ebus.wholesaler.demo", IAction.class);
+		actionList.addAll((ArrayList<IAction>)ClassFinderUtil.findAll("de.htwg_konstanz.ebus.wholesaler.action", IAction.class));
 	}
 
 	/** 
@@ -123,6 +124,7 @@ public class ControllerServlet extends HttpServlet
 		String actionParam = request.getParameter(Constants.PARAM_NAME_ACTION);
 		// dispatch the action 
 		if (actionParam != null)
+			System.out.println(actionParam);
 		{			
 			for (IAction action : actionList)
 			{
