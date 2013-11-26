@@ -60,6 +60,13 @@
 		<servlet-name>convertToBMECat</servlet-name>
 		<servlet-class>de.htwg_konstanz.ebus.wholesaler.main.convertToBMECat</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>FileUploadServlet</display-name>
+		<servlet-name>FileUploadServlet</servlet-name>
+		<servlet-class>de.htwg_konstanz.ebus.wholesaler.main.FileUploadServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>OrderServicePort</servlet-name>
@@ -77,8 +84,20 @@
 		<servlet-name>convertToBMECat</servlet-name>
 		<url-pattern>/convertToBMECat</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FileUploadServlet</servlet-name>
+		<url-pattern>/FileUploadServlet</url-pattern>
+	</servlet-mapping>
 
   <welcome-file-list>
   	<welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
+  
+  <context-param> 
+    <description>Location to store uploaded file</description> 
+    <param-name>file-upload</param-name> 
+    <param-value>
+         C:\Users\Gianni\git\EBUT\WholesalerWebDemo\WebContent
+     </param-value> 
+</context-param>
 </web-app>
