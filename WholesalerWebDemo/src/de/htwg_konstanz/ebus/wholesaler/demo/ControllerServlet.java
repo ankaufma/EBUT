@@ -128,6 +128,7 @@ public class ControllerServlet extends HttpServlet
 		{			
 			for (IAction action : actionList)
 			{
+				System.out.println("Action: "+action.toString());
 				if (action.accepts(actionParam))
 				{
 					String redirectURL = action.execute(request, response, errorList);
