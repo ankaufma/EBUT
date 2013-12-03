@@ -20,14 +20,20 @@
 ************************************************************************************/
 package de.htwg_konstanz.ebus.wholesaler.demo;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import de.htwg_konstanz.ebus.framework.wholesaler.api.boa._BaseBOA;
 import de.htwg_konstanz.ebus.wholesaler.demo.util.ClassFinderUtil;
@@ -70,9 +76,11 @@ public class ControllerServlet extends HttpServlet
 	*/
 	public void init() throws ServletException
 	{
+		System.out.println("Init start");
 		// load all classes (actions) which implement the IAction interface 
 		actionList = (ArrayList<IAction>)ClassFinderUtil.findAll("de.htwg_konstanz.ebus.wholesaler.demo", IAction.class);
 		actionList.addAll((ArrayList<IAction>)ClassFinderUtil.findAll("de.htwg_konstanz.ebus.wholesaler.action", IAction.class));
+		System.out.println("Init Ende");
 	}
 
 	/** 
@@ -122,13 +130,14 @@ public class ControllerServlet extends HttpServlet
 
 		// get the action request parameter
 		String actionParam = request.getParameter(Constants.PARAM_NAME_ACTION);
+		System.out.println(actionParam);
 		// dispatch the action 
 		if (actionParam != null)
 			System.out.println(actionParam);
 		{			
 			for (IAction action : actionList)
 			{
-				//System.out.println("Action: "+action.toString());
+				System.out.println("Action: "+action.toString());
 				if (action.accepts(actionParam))
 				{
 					String redirectURL = action.execute(request, response, errorList);

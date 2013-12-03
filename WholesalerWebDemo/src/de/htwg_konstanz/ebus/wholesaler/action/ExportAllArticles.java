@@ -84,7 +84,6 @@ public class ExportAllArticles implements IAction {
 
 	@Override
 	public boolean accepts(String actionName) {
-		System.err.println("TEST2");
 		return actionName.equalsIgnoreCase(ACTION_SHOW_ALL_ARTICLES);
 	}
 

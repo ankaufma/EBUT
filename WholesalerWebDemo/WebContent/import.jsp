@@ -8,10 +8,9 @@
 </head>
 <body>
 	<center>
-		<form name = "importform" method="post" action="<%= response.encodeURL("ImportAction") %>" enctype="multipart/form-data">
-			Select file to upload: <input type="file" name="importFile" /> <br />
-			<input type="hidden" name="action" value="importDOMProducts"> <input
-				type="submit" name="Submit" value="Upload File">
+		<form name = "import" method="post" action="<%= response.encodeURL("controllerservlet") %>" enctype="multipart/form-data"> 
+			<input type="file" name="action" /> 
+			<input type="submit" name="Submit" value="Upload File"/>
 		</form>
 	</center>
 </body>
