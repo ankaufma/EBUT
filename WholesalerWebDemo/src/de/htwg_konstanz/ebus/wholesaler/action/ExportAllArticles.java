@@ -1,5 +1,6 @@
 package de.htwg_konstanz.ebus.wholesaler.action;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import de.htwg_konstanz.ebus.framework.wholesaler.api.boa.ProductBOA;
 import de.htwg_konstanz.ebus.framework.wholesaler.api.security.Security;
 import de.htwg_konstanz.ebus.wholesaler.demo.IAction;
 import de.htwg_konstanz.ebus.wholesaler.demo.LoginBean;
-import de.htwg_konstanz.ebus.wholesaler.main.convertToBMECat;
+import de.htwg_konstanz.ebus.wholesaler.main.ConvertToBMECat;
 
 /**
  * Servlet implementation class ExportAllArticles
@@ -35,7 +36,6 @@ public class ExportAllArticles implements IAction {
 	@Override
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response, ArrayList<String> errorList) {
-		System.err.println("Executing Export!");
 		
 		// get the login bean from the session
 		LoginBean loginBean = (LoginBean)request.getSession(true).getAttribute(PARAM_LOGIN_BEAN);
@@ -51,8 +51,15 @@ public class ExportAllArticles implements IAction {
 			{
 				// find all available products and put it to the session
 				List<BOProduct> productList = ProductBOA.getInstance().findAll();
-				System.out.println("Should start Converting!");
-				
+				try {
+					new ConvertToBMECat(productList);
+				} catch (TransformerConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				//new convertToBMECat(productList);
 				System.out.println("Converting Abgeschlossen!");
 				
