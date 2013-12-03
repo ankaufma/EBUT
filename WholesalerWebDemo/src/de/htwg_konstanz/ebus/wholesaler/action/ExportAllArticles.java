@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
 
 import de.htwg_konstanz.ebus.framework.wholesaler.api.bo.BOProduct;
 import de.htwg_konstanz.ebus.framework.wholesaler.api.boa.ProductBOA;
@@ -33,9 +35,12 @@ public class ExportAllArticles implements IAction {
 	@Override
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response, ArrayList<String> errorList) {
+		System.err.println("Executing Export!");
+		
 		// get the login bean from the session
 		LoginBean loginBean = (LoginBean)request.getSession(true).getAttribute(PARAM_LOGIN_BEAN);
-
+		
+		
 		// ensure that the user is logged in
 		if (loginBean != null && loginBean.isLoggedIn())
 		{
@@ -46,7 +51,17 @@ public class ExportAllArticles implements IAction {
 			{
 				// find all available products and put it to the session
 				List<BOProduct> productList = ProductBOA.getInstance().findAll();
-				new convertToBMECat(productList);
+				System.out.println("Should start Converting!");
+				try {
+					new convertToBMECat(productList);
+					System.out.println("Converting Abgeschlossen!");
+				} catch (TransformerConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				request.getSession(true).setAttribute(PARAM_ALL_ARTICLES, productList);					
 			
 				// redirect to the product page
@@ -68,6 +83,7 @@ public class ExportAllArticles implements IAction {
 
 	@Override
 	public boolean accepts(String actionName) {
+		System.err.println("TEST2");
 		return actionName.equalsIgnoreCase(ACTION_SHOW_ALL_ARTICLES);
 	}
 
