@@ -8,10 +8,10 @@
 </head>
 <body>
 	<center>
-		<form name = "importform" method="post" action="<%= response.encodeURL("controllerservlet") %>" enctype="multipart/form-data">
+		<form name = "importform" method="post" action="" enctype="multipart/form-data">
 			Select file to upload: <input type="file" name="importFile" /> <br />
 			<input type="hidden" name="action" value="import"> <input
-				type="submit" name="Submit" value="import">
+				type="submit" name="Submit" value="Upload File">
 		</form>
 	</center>
 </body>

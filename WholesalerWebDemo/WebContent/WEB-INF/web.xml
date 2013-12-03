@@ -1,103 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<servlet>
-	   <servlet-name>controllerservlet</servlet-name>
-	   <servlet-class>de.htwg_konstanz.ebus.wholesaler.demo.ControllerServlet</servlet-class>
-		<init-param>
-	   		<param-name>context_root</param-name>
-	       	<param-value>WholesalerWebDemo</param-value>
-	   	</init-param>
-		<init-param>
-	   		<param-name>jsp_base</param-name>
-	       	<param-value></param-value>
-	   	</init-param>
-		<init-param>
-	   		<param-name>mysql_path</param-name>
-	       	<param-value>C:\APPLICATION\xampp\mysql\bin</param-value>
-	   	</init-param>
-	</servlet>
+        <servlet>
+           <servlet-name>controllerservlet</servlet-name>
+           <servlet-class>de.htwg_konstanz.ebus.wholesaler.demo.ControllerServlet</servlet-class>
+                <init-param>
+                           <param-name>context_root</param-name>
+                       <param-value>WholesalerWebDemo</param-value>
+                   </init-param>
+                <init-param>
+                           <param-name>jsp_base</param-name>
+                       <param-value></param-value>
+                   </init-param>
+                <init-param>
+                           <param-name>mysql_path</param-name>
+                       <param-value>C:\APPLICATION\xampp\mysql\bin</param-value>
+                   </init-param>
+        </servlet>
   
-	<servlet-mapping>
-	  <servlet-name>controllerservlet</servlet-name>
-	  <url-pattern>/cs</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-	  <servlet-name>controllerservlet</servlet-name>
-	  <url-pattern>/controllerservlet</url-pattern>
-	</servlet-mapping>
+        <servlet-mapping>
+          <servlet-name>controllerservlet</servlet-name>
+          <url-pattern>/cs</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+          <servlet-name>controllerservlet</servlet-name>
+          <url-pattern>/controllerservlet</url-pattern>
+        </servlet-mapping>
   
-	<listener>
-		<listener-class>
-			com.sun.xml.ws.transport.http.servlet.WSServletContextListener
-		</listener-class>
-	</listener>
-	
-	<servlet>
-		<description>JAX-WS endpoint - OrderService</description>
-		<display-name>OrderService</display-name>
-		<servlet-name>OrderServicePort</servlet-name>
-		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>AllProducts</display-name>
-		<servlet-name>AllProducts</servlet-name>
-		<servlet-class>de.htwg_konstanz.ebus.wholesaler.main.AllProducts</servlet-class>
-	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>ExportAllArticles</display-name>
-		<servlet-name>ExportAllArticles</servlet-name>
-		<servlet-class>de.htwg_konstanz.ebus.wholesaler.action.ExportAllArticles</servlet-class>
-	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>convertToBMECat</display-name>
-		<servlet-name>convertToBMECat</servlet-name>
-		<servlet-class>de.htwg_konstanz.ebus.wholesaler.main.convertToBMECat</servlet-class>
-	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>FileUploadServlet</display-name>
-		<servlet-name>FileUploadServlet</servlet-name>
-		<servlet-class>de.htwg_konstanz.ebus.wholesaler.main.FileUploadServlet</servlet-class>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>OrderServicePort</servlet-name>
-		<url-pattern>/OrderService</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>AllProducts</servlet-name>
-		<url-pattern>/AllProducts</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>ExportAllArticles</servlet-name>
-		<url-pattern>/ExportAllArticles</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>convertToBMECat</servlet-name>
-		<url-pattern>/convertToBMECat</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>FileUploadServlet</servlet-name>
-		<url-pattern>/FileUploadServlet</url-pattern>
-	</servlet-mapping>
+        <listener>
+                <listener-class>
+                        com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+                </listener-class>
+        </listener>
+        
+        <servlet>
+                <description>JAX-WS endpoint - OrderService</description>
+                <display-name>OrderService</display-name>
+                <servlet-name>OrderServicePort</servlet-name>
+                <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+                <load-on-startup>1</load-on-startup>
+        </servlet>
+        <servlet>
+                <description>
+                </description>
+                <display-name>AllProducts</display-name>
+                <servlet-name>AllProducts</servlet-name>
+                <servlet-class>de.htwg_konstanz.ebus.wholesaler.main.AllProducts</servlet-class>
+        </servlet>
+        <servlet>
+                <description>
+                </description>
+                <display-name>ExportAllArticles</display-name>
+                <servlet-name>ExportAllArticles</servlet-name>
+                <servlet-class>de.htwg_konstanz.ebus.wholesaler.action.ExportAllArticles</servlet-class>
+        </servlet>
+        <servlet>
+                <description>
+                </description>
+                <display-name>convertToBMECat</display-name>
+                <servlet-name>convertToBMECat</servlet-name>
+                <servlet-class>de.htwg_konstanz.ebus.wholesaler.main.convertToBMECat</servlet-class>
+        </servlet>
+        <servlet>
+                <description>
+                </description>
+                <display-name>FileUploadServlet</display-name>
+                <servlet-name>FileUploadServlet</servlet-name>
+                <servlet-class>de.htwg_konstanz.ebus.wholesaler.main.FileUploadServlet</servlet-class>
+        </servlet>
+        
+        <servlet-mapping>
+                <servlet-name>OrderServicePort</servlet-name>
+                <url-pattern>/OrderService</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+                <servlet-name>AllProducts</servlet-name>
+                <url-pattern>/AllProducts</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+                <servlet-name>ExportAllArticles</servlet-name>
+                <url-pattern>/ExportAllArticles</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+                <servlet-name>convertToBMECat</servlet-name>
+                <url-pattern>/convertToBMECat</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+                <servlet-name>FileUploadServlet</servlet-name>
+                <url-pattern>/FileUploadServlet</url-pattern>
+        </servlet-mapping>
 
   <welcome-file-list>
-  	<welcome-file>login.jsp</welcome-file>
+          <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
-  
   <context-param> 
     <description>Location to store uploaded file</description> 
     <param-name>file-upload</param-name> 
     <param-value>
-         C:\Users\Gianni\git\EBUT\WholesalerWebDemo\WebContent
+         C:\Users\Gianni\git\EBUT\WholesalerWebDemo\WebContent\WEB-INF
      </param-value> 
 </context-param>
 </web-app>
