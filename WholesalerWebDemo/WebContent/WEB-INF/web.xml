@@ -63,9 +63,9 @@
         <servlet>
                 <description>
                 </description>
-                <display-name>FileUploadServlet</display-name>
-                <servlet-name>FileUploadServlet</servlet-name>
-                <servlet-class>de.htwg_konstanz.ebus.wholesaler.main.FileUploadServlet</servlet-class>
+                <display-name>ImportAction</display-name>
+                <servlet-name>ImportAction</servlet-name>
+                <servlet-class>de.htwg_konstanz.ebus.wholesaler.main.ImportAction</servlet-class>
         </servlet>
         
         <servlet-mapping>
@@ -85,8 +85,8 @@
                 <url-pattern>/convertToBMECat</url-pattern>
         </servlet-mapping>
         <servlet-mapping>
-                <servlet-name>FileUploadServlet</servlet-name>
-                <url-pattern>/FileUploadServlet</url-pattern>
+                <servlet-name>ImportAction</servlet-name>
+                <url-pattern>/ImportAction</url-pattern>
         </servlet-mapping>
 
   <welcome-file-list>
@@ -96,7 +96,7 @@
     <description>Location to store uploaded file</description> 
     <param-name>file-upload</param-name> 
     <param-value>
-         C:\Users\Gianni\git\EBUT\WholesalerWebDemo\WebContent\WEB-INF
+        C:\Temp
      </param-value> 
 </context-param>
 </web-app>
