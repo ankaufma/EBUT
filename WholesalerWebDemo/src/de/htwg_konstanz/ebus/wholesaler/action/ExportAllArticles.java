@@ -52,16 +52,10 @@ public class ExportAllArticles implements IAction {
 				// find all available products and put it to the session
 				List<BOProduct> productList = ProductBOA.getInstance().findAll();
 				System.out.println("Should start Converting!");
-				try {
-					new convertToBMECat(productList);
-					System.out.println("Converting Abgeschlossen!");
-				} catch (TransformerConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParserConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
+				//new convertToBMECat(productList);
+				System.out.println("Converting Abgeschlossen!");
+				
 				request.getSession(true).setAttribute(PARAM_ALL_ARTICLES, productList);					
 			
 				// redirect to the product page

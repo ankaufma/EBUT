@@ -36,7 +36,7 @@ public class convertToBMECat {
 	public convertToBMECat(List<BOProduct> productList) throws TransformerConfigurationException, ParserConfigurationException {
 		System.out.println("TEST!");
 		this.productList = productList;
-		buildBMECat();
+		//buildBMECat();
 	}
 	
 	private void buildBMECat() throws ParserConfigurationException, TransformerConfigurationException {
