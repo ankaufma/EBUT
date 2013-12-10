@@ -27,7 +27,7 @@ public class ImportAction implements IAction {
 	@Override
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response, ArrayList<String> errorList) {
-		System.out.println("Staring Execute");
+		System.out.println("Starting Execute");
 		// Check that we have a file upload request
 		//isMultipart = ServletFileUpload.isMultipartContent(request);
 		response.setContentType("text/html");
