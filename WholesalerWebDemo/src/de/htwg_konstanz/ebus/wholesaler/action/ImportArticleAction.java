@@ -11,7 +11,7 @@ public class ImportArticleAction extends ImportAction {
 	 * Constructor
 	 */
 	public ImportArticleAction() {
-		xsdfile = "C:\\Users\\Björn Blankenhagen\\Downloads\\WholesalerWebDemo_SS12\\WholesalerWebDemo\\files\\bmecat_new_catalog_1_2_simple_without_NS.xsd";
+		xsdfile = "C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd";
 
 	}
 
@@ -27,7 +27,7 @@ public class ImportArticleAction extends ImportAction {
 	 */
 	public boolean accepts(String actionName) {
 
-		return actionName.equalsIgnoreCase("doArticleUpload");
+		return actionName.equalsIgnoreCase("import");
 	}
 
 	/**

@@ -25,7 +25,7 @@ import de.htwg_konstanz.ebus.wholesaler.main.IDatabaseInserter;
 
 public class ImportAction implements IAction
 {
-	public static final String ACTION_UPLOAD = "doUpload";
+	public static final String ACTION_IMPORT = "import";
 	public static final String PARAM_LOGIN_BEAN = "loginBean";
 
 	String xsdfile="";
@@ -109,22 +109,9 @@ public class ImportAction implements IAction
    */
 	public boolean accepts(String actionName)
 	{
-		return actionName.equalsIgnoreCase(ACTION_UPLOAD);
+		return actionName.equalsIgnoreCase(ACTION_IMPORT);
 	}
-	/*
-	private Schema getSchema()
-	{
-		Schema schema = null;
-	    try {
-	      String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
-	      SchemaFactory factory = SchemaFactory.newInstance(language);
-	      schema = factory.newSchema(new File(xsdfile));
-	    } catch (Exception e) {
-	      System.out.println(e.toString());
-	    }
-	    return schema;
-	}
-	*/
+
 	/**
 	 * 
 	 * @param request
