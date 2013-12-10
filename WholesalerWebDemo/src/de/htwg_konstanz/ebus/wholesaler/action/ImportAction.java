@@ -85,7 +85,7 @@ public class ImportAction implements IAction {
 						System.out.println("Validation successfully");
 						// import
 						DOMDatabaseInserter inserter = new DOMDatabaseInserter();
-						inserter.insertIntoDatabase(null);
+						inserter.insertIntoDatabase(item, document);
 
 					}
 				}
