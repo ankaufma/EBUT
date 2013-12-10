@@ -2,6 +2,7 @@ package de.htwg_konstanz.ebus.wholesaler.action;
 
 import java.util.ArrayList;
 import de.htwg_konstanz.ebus.wholesaler.demo.IAction;
+import de.htwg_konstanz.ebus.wholesaler.main.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -26,8 +27,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import de.htwg_konstanz.ebus.wholesaler.demo.IAction;
 
 public class ImportAction implements IAction {
 
@@ -72,12 +71,12 @@ public class ImportAction implements IAction {
 						InputStream inputSchema = this
 								.getClass()
 								.getResourceAsStream(
-										"/bmecat_new_catalog_1_2_simple_without_NS.xsd");
+										"C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd");
 						System.out
 								.println("Pfad: "
 										+ this.getClass()
 												.getResourceAsStream(
-														"/bmecat_new_catalog_1_2_simple_without_NS.xsd"));
+														"C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd"));
 						Schema schema = schemaFactory
 								.newSchema(new StreamSource(inputSchema));
 						// validation
@@ -85,6 +84,8 @@ public class ImportAction implements IAction {
 						validator.validate(new DOMSource(document));
 						System.out.println("Validation successfully");
 						// import
+						DOMDatabaseInserter inserter = new DOMDatabaseInserter();
+						inserter.insertIntoDatabase(null);
 
 					}
 				}
