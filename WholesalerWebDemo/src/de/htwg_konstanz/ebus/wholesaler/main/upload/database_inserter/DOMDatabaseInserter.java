@@ -30,6 +30,7 @@ import de.htwg_konstanz.ebus.framework.wholesaler.api.boa._BaseBOA;
 import de.htwg_konstanz.ebus.wholesaler.main.Errors;
 import de.htwg_konstanz.ebus.wholesaler.main.IDatabaseInserter;
 
+
 public class DOMDatabaseInserter implements IDatabaseInserter
 {
 	/**
