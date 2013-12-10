@@ -49,7 +49,7 @@ public class ConvertToBMECat {
 		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); 
 		URL schemaURL;
 		try {
-			schemaURL = new URL("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\wsdl\\bmecat_new_catalog_1_2_simple_eps_V0.96.xsd");
+			schemaURL = new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\wsdl\\bmecat_new_catalog_1_2_simple_eps_V0.96.xsd").toURI().toURL();
 			Schema schema = sf.newSchema(schemaURL); 
 			Validator validator = schema.newValidator();
 			DOMSource source = new DOMSource(xmlDOM);
