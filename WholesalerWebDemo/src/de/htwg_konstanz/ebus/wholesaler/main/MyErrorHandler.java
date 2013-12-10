@@ -1,4 +1,4 @@
-package de.htwg_konstanz.ebus.wholesaler.action;
+package de.htwg_konstanz.ebus.wholesaler.main;
 import java.util.ArrayList;
 import java.util.List;
 

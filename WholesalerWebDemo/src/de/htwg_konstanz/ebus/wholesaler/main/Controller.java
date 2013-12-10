@@ -1,4 +1,4 @@
-package de.htwg_konstanz.ebus.wholesaler.action;
+package de.htwg_konstanz.ebus.wholesaler.main;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,6 @@ import javax.xml.validation.Validator;
 import org.xml.sax.SAXException;
 
 
-import de.htwg_konstanz.ebus.wholesaler.main.IDatabaseInserter;
 
 public class Controller {
 	public static final String XML = "http://www.w3.org/2001/XMLSchema";
