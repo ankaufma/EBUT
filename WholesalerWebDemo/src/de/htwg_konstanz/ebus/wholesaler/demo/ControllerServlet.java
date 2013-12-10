@@ -133,7 +133,6 @@ public class ControllerServlet extends HttpServlet
 		System.out.println(actionParam);
 		// dispatch the action 
 		if (actionParam != null)
-			System.out.println(actionParam);
 		{			
 			for (IAction action : actionList)
 			{

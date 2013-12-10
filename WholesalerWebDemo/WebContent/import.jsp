@@ -7,9 +7,12 @@
 <title>Import</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
+<%@ include file="error.jsp" %>
 	<center>
-		<form name = "import" method="post" action="<%= response.encodeURL("controllerservlet") %>" enctype="multipart/form-data"> 
-			<input type="file" name="action" /> 
+		<form name = "import" action="<%= response.encodeURL("controllerservlet") %>" enctype="multipart/form-data"> 
+			<input type="hidden" name="action" value="import" />
+			<input type="file" name="fileUpload" /> 
 			<input type="submit" name="Submit" value="Upload File"/>
 		</form>
 	</center>
