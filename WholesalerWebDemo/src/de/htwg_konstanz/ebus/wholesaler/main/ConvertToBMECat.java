@@ -54,6 +54,7 @@ public class ConvertToBMECat {
 			Validator validator = schema.newValidator();
 			DOMSource source = new DOMSource(xmlDOM);
 			validator.validate(source);
+			System.out.println("HIER!");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
