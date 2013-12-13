@@ -1,6 +1,8 @@
 package de.htwg_konstanz.ebus.wholesaler.main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,6 +22,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.*;
 
 import org.w3c.dom.Attr;
@@ -39,22 +42,21 @@ import de.htwg_konstanz.ebus.framework.wholesaler.vo.Country;
 public class ConvertToBMECat {
 	private List<BOProduct> productList;
 	private int i = 0;
+	private String filename;
 
 	public ConvertToBMECat(List<BOProduct> productList) throws TransformerConfigurationException, ParserConfigurationException {
 		this.productList = productList;
-		buildBMECat();
 	}
 	
 	private void validateDocument(Document xmlDOM) {
 		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); 
 		URL schemaURL;
 		try {
-			schemaURL = new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\wsdl\\bmecat_new_catalog_1_2_simple_eps_V0.96.xsd").toURI().toURL();
+			schemaURL = new File("C:\\Temp\\Übung\\Uebungsblatt2\\Aufgabe2\\ProduktkatalogToBMECat\\bmecat_new_catalog_1_2_simple_V0.96.xsd").toURI().toURL();
 			Schema schema = sf.newSchema(schemaURL); 
 			Validator validator = schema.newValidator();
 			DOMSource source = new DOMSource(xmlDOM);
 			validator.validate(source);
-			System.out.println("HIER!");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,7 +69,7 @@ public class ConvertToBMECat {
 		}
 	}
 	
-	private void buildBMECat() throws ParserConfigurationException, TransformerConfigurationException {
+	public String buildBMECat() throws ParserConfigurationException, TransformerConfigurationException {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 		Document doc = docBuilder.newDocument();
@@ -185,16 +187,37 @@ public class ConvertToBMECat {
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
 		validateDocument(doc);
-		StreamResult result = new StreamResult(new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\BMECat.xml"));
-		
+		filename = "BMECat"+System.currentTimeMillis()+".xml";
+		StreamResult result = new StreamResult(new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+filename));
 		try {
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
-		System.out.println("File saved!");
+		transfromForWeb(doc, filename);
+		new DropFiles(filename).start();
+		return filename;
+	}
+	
+	public void transfromForWeb(Document doc, String filename) {
+		try {
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Transformer transformer = factory.newTransformer(new StreamSource("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\wsdl\\BMECatToWeb.xslt"));
+			transformer.transform(
+					new StreamSource("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+filename),
+					new StreamResult(new FileOutputStream("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+filename+".html"))
+					);
+		} catch (TransformerConfigurationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 

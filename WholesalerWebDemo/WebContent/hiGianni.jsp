@@ -1,3 +1,4 @@
+<%@ page import = "java.util.*" %>
 <%@ page session="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -13,6 +14,7 @@
 <%@ include file="header.jsp" %>
 <%@ include file="error.jsp" %>
 
-<h1>Hi Andi!!!</h1>
+<h1>you can Download your file now at</h1>
+<a href="http://localhost:8080/WholesalerWebDemo/<%= request.getParameter("filename") %>">Heer!</a>
 </body>
 </html>

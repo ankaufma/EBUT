@@ -24,7 +24,7 @@ public class ExportAllArticles implements IAction {
 	public static final String ACTION_SHOW_ALL_ARTICLES = "exportAllArticles";
 	public static final String PARAM_LOGIN_BEAN = "loginBean";
 	private static final String PARAM_ALL_ARTICLES = "productList";
-       
+    private String filename;   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -52,7 +52,7 @@ public class ExportAllArticles implements IAction {
 				// find all available products and put it to the session
 				List<BOProduct> productList = ProductBOA.getInstance().findAll();
 				try {
-					new ConvertToBMECat(productList);
+					filename = new ConvertToBMECat(productList).buildBMECat();
 				} catch (TransformerConfigurationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -66,7 +66,7 @@ public class ExportAllArticles implements IAction {
 				request.getSession(true).setAttribute(PARAM_ALL_ARTICLES, productList);					
 			
 				// redirect to the product page
-				return "products.jsp";
+				return filename+".html";
 			}
 			else
 			{
