@@ -2,7 +2,6 @@ package de.htwg_konstanz.ebus.wholesaler.main;
 
 import java.io.File;
 
-import org.eclipse.jdt.internal.compiler.apt.util.EclipseFileManager;
 
 public class DropFiles extends Thread {
 	
@@ -16,10 +15,13 @@ public class DropFiles extends Thread {
 	@Override
 	public void run() {
 		File fi = new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+this.filename);
+		File site = new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+this.filename+".html");
 		
 		try {
 			Thread.sleep(60000);
 			if(fi.delete()) System.out.println("File Deleted");
+			else System.out.println("File couldn't be deleted");
+			if(site.delete()) System.out.println("File Deleted");
 			else System.out.println("File couldn't be deleted");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
