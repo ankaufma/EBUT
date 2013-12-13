@@ -38,6 +38,7 @@ public class Controller {
 		this.xmlfile = xmlfile;
 		this.inserter = inserter;
 		this.schemafile = schemafile;
+		System.out.println("successfully controller initiation");
 	}
 	/**
 	 * start of validation and insert
