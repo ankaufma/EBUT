@@ -80,13 +80,13 @@ public class Controller {
 		catch (SAXException e) 
 		{
 			e.printStackTrace();
-			results.get(Errors.NOT_WELLFORMED).add("XML is not wellformed!");
+			results.get(Errors.NOT_WELLFORMED).add(e.getMessage());
 			results.get(Errors.NOT_WELLFORMED).add(e.toString());
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
-			results.get(Errors.NOT_WELLFORMED).add("XML is not wellformed!");
+			results.get(Errors.NOT_WELLFORMED).add(e.getMessage());
 			results.get(Errors.NOT_WELLFORMED).add(e.toString());
 		}
 		return false;
