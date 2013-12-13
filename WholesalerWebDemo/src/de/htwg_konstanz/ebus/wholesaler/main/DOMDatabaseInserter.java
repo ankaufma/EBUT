@@ -47,9 +47,16 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 	{
         Document dom = null;
 		try {
+			System.out.println("Document Builder Factory initialization");
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			System.out.println("Factory successful created");
+			System.out.println("Create Document Builder");
 	        DocumentBuilder builder = factory.newDocumentBuilder();
+	        System.out.println("Document Builder created");
+	        System.out.println("Start Parsing");
 	        dom = builder.parse(xmlfile);
+	        System.out.println("Dom successfully parsed");
+	        System.out.println("XML File exists? answer: "+xmlfile.exists());
 		} 
 		catch (SAXException e) 
 		{
@@ -67,15 +74,18 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 			e.printStackTrace();
 		}
 		
-		
+		//map with updated and new products
+		System.out.println("Start initialize Result Map");
 		HashMap<String, List<String>> resultMap = initResultMap();
-
+		System.out.println("Result Map created");
 		ArrayList<String> updatedProducts = new ArrayList<String>();
 		ArrayList<String> newProducts = new ArrayList<String>();
-
+		System.out.println("get dom root element");
 		Element root = dom.getDocumentElement();
+		System.out.println("Root: "+ root.getNodeValue());
 		
 		// Supplier
+		System.out.println("get supplier from dom root");
 		BOSupplier supplier = getSupplier(root);
 		
 		if (supplier == null){
@@ -137,11 +147,13 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 	 */
 	private BOSupplier getSupplier(final Element root) {
 		BOSupplier supplier = null;
-
+		System.out.println("NodeList Suppliers");
 		NodeList suppliers = root.getElementsByTagName("SUPPLIER_NAME");
+		
+		System.out.println("NodeList: "+suppliers.item(0));
 	    Element supplierElement = (Element) suppliers.item(0);
 		String supplierName = supplierElement.getFirstChild().getNodeValue();
-		
+		System.out.println("Supplier Name: "+supplierName);
 		SupplierBOA sboa = SupplierBOA.getInstance();
 
 		List<BOSupplier> listeBOSupplier = sboa.findByCompanyName(supplierName);

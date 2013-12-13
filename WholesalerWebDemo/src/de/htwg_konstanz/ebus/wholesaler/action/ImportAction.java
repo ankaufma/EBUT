@@ -14,6 +14,7 @@ import de.htwg_konstanz.ebus.wholesaler.demo.ControllerServlet;
 import de.htwg_konstanz.ebus.wholesaler.demo.IAction;
 import de.htwg_konstanz.ebus.wholesaler.demo.LoginBean;
 import de.htwg_konstanz.ebus.wholesaler.main.Controller;
+import de.htwg_konstanz.ebus.wholesaler.main.DOMDatabaseInserter;
 import de.htwg_konstanz.ebus.wholesaler.main.FileObject;
 import de.htwg_konstanz.ebus.wholesaler.main.FileUpload;
 import de.htwg_konstanz.ebus.wholesaler.main.IDatabaseInserter;
@@ -96,6 +97,6 @@ public class ImportAction implements IAction
 	 */
 	public IDatabaseInserter getInserter(HttpServletRequest request)
 	{
-		return null;
+		return new DOMDatabaseInserter();
 	}
 }

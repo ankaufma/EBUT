@@ -10,20 +10,20 @@ public class ImportArticleAction extends ImportAction {
 	/**
 	 * Constructor
 	 */
-	public ImportArticleAction() {
-		xsdfile = "C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd";
-	}
-
-	public boolean accepts(String actionName) {
-
-		return actionName.equalsIgnoreCase("import");
-	}
-
-	/**
-	 * 
-	 * @param request
-	 * @return an instance of an IDatabaseInserter
-	 */
+//	public ImportArticleAction() {
+//		xsdfile = "C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd";
+//	}
+//
+//	public boolean accepts(String actionName) {
+//
+//		return actionName.equalsIgnoreCase("import");
+//	}
+//
+//	/**
+//	 * 
+//	 * @param request
+//	 * @return an instance of an IDatabaseInserter
+//	 */
 	@Override
 	public IDatabaseInserter getInserter(HttpServletRequest request) {
 		String parser = request.getParameter("parser");
