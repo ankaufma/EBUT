@@ -26,4 +26,6 @@ public class Errors
 	 * defines key for list with errors which imply not validness
 	 */
 	public static final String NOT_VALID = "notValid";
+	
+	
 }
