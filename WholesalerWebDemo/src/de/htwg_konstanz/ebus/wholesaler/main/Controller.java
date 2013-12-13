@@ -2,11 +2,13 @@ package de.htwg_konstanz.ebus.wholesaler.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -57,8 +59,10 @@ public class Controller {
 	private boolean validate()
 	{	
 		try 
-		{		
-			Schema schema = SchemaFactory.newInstance(XML).newSchema(schemafile);
+		{
+			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			URL schemaURL = new File("C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd").toURI().toURL();
+			Schema schema = sf.newSchema(schemaURL); 
 			Validator validator = schema.newValidator();
 			MyErrorHandler errHandler = new MyErrorHandler();
 			validator.setErrorHandler(errHandler);
