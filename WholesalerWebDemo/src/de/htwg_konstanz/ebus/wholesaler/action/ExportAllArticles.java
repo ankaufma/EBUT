@@ -56,7 +56,11 @@ public class ExportAllArticles implements IAction {
 				// If SearchString isn't empty search for products which match
 				// that regular expression in their Shortname
 				// otherwise return all Articles
-				if(request.getParameter("search") != null || request.getParameter("search") != "") {
+				if(request.getParameter("search") == "null")
+				System.out.println("Null wurde ausgegebn!");
+				if(request.getParameter("search") == null)
+				System.out.println("Ist null!");
+				if(request.getParameter("search") != null) {
 					List<BOProduct> productListSearch = ProductBOA.getInstance().findAll();
 					productList = new ArrayList<BOProduct>();
 					System.out.println("Neue Produktliste");
