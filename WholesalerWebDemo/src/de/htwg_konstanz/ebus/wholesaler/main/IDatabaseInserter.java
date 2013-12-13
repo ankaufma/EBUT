@@ -6,5 +6,4 @@ import java.util.Map;
 
 public interface IDatabaseInserter {
 	Map<String, List<String>> insertIntoDatabase(File xmlFile);
-
 }
