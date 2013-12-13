@@ -42,6 +42,7 @@ import de.htwg_konstanz.ebus.framework.wholesaler.vo.Country;
 public class ConvertToBMECat {
 	private List<BOProduct> productList;
 	private int i = 0;
+	private int j = 0;
 	private String filename;
 
 	public ConvertToBMECat(List<BOProduct> productList) throws TransformerConfigurationException, ParserConfigurationException {
@@ -86,7 +87,6 @@ public class ConvertToBMECat {
 		Element dTime = doc.createElement("DATETIME");
 		Element datum = doc.createElement("DATE");
 		Element supplier = doc.createElement("SUPPLIER");
-		Element supId = doc.createElement("SUPPLIER_ID");
 		Element supName = doc.createElement("SUPPLIER_NAME");
 		Element tNewCat = doc.createElement("T_NEW_CATALOG");
 		doc.appendChild(rootElement);
@@ -104,8 +104,6 @@ public class ConvertToBMECat {
 		dTime.appendChild(datum);
 		datum.appendChild(doc.createTextNode("2013-05-01"));
 		header.appendChild(supplier);
-		supplier.appendChild(supId);
-		supId.appendChild(doc.createTextNode("1"));
 		supplier.appendChild(supName);
 		supName.appendChild(doc.createTextNode("Gianni und Andy Co. KG"));
 		rootElement.appendChild(tNewCat);
@@ -132,6 +130,7 @@ public class ConvertToBMECat {
 		//Element[] aIdTo = doc.createElement("ART_ID_TO"); 
 		
 		for(BOProduct product: this.productList) {
+			j++;
 			article[i] = doc.createElement("ARTICLE");
 			tNewCat.appendChild(article[i]);
 			supAID[i] = doc.createElement("SUPPLIER_AID");
@@ -218,6 +217,10 @@ public class ConvertToBMECat {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int getCountOfArticles() {
+		return this.j;
 	}
 	
 

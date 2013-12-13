@@ -24,7 +24,8 @@ public class ExportAllArticles implements IAction {
 	public static final String ACTION_SHOW_ALL_ARTICLES = "exportAllArticles";
 	public static final String PARAM_LOGIN_BEAN = "loginBean";
 	private static final String PARAM_ALL_ARTICLES = "productList";
-    private String filename;   
+    private String filename;
+    private int i;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -50,9 +51,29 @@ public class ExportAllArticles implements IAction {
 			if (Security.getInstance().isUserAllowed(loginBean.getUser(), Security.RESOURCE_ALL, Security.ACTION_READ))
 			{
 				// find all available products and put it to the session
-				List<BOProduct> productList = ProductBOA.getInstance().findAll();
+				// Initial ProductList 
+				List<BOProduct> productList;
+				// If SearchString isn't empty search for products which match
+				// that regular expression in their Shortname
+				// otherwise return all Articles
+				if(request.getParameter("search") != null || request.getParameter("search") != "") {
+					List<BOProduct> productListSearch = ProductBOA.getInstance().findAll();
+					productList = new ArrayList<BOProduct>();
+					System.out.println("Neue Produktliste");
+					for(BOProduct myProduct: productListSearch) {
+						System.out.println("Suche in: "+myProduct.getShortDescription());
+						if(myProduct.getShortDescription().matches(".*"+request.getParameter("search")+".*")) {
+							System.out.println("Adding: "+myProduct.getShortDescription());
+							productList.add(myProduct);
+						}
+					}
+				} else {
+					productList = ProductBOA.getInstance().findAll();
+				}
 				try {
-					filename = new ConvertToBMECat(productList).buildBMECat();
+					ConvertToBMECat cbme = new ConvertToBMECat(productList);
+					filename = cbme.buildBMECat();
+					i = cbme.getCountOfArticles();
 				} catch (TransformerConfigurationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -66,7 +87,7 @@ public class ExportAllArticles implements IAction {
 				request.getSession(true).setAttribute(PARAM_ALL_ARTICLES, productList);					
 			
 				// redirect to the product page
-				return filename+".html";
+				return "export.jsp?filename="+filename+"&countOfArticles="+i;
 			}
 			else
 			{

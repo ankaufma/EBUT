@@ -4,8 +4,11 @@
 	<xsl:template match="/">
 		<html>
 			<head>
-				<title>Product Catalog</title>
-			</head>
+				<title>eBusiness Framework Demo - Artcile List</title>
+				<meta http-equiv="cache-control" content="no-cache"/>
+				<meta http-equiv="pragma" content="no-cache"/>
+				<link rel="stylesheet" type="text/css" href="default.css"/>
+				</head>
 			<body>
 				<h1>Product Catalog</h1>
 				<table class="dataTable">
