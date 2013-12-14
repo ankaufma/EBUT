@@ -39,8 +39,7 @@ public class ImportAction implements IAction
 		// ensure that the user is logged in
 		if (loginBean != null && loginBean.isLoggedIn())
 		{
-			System.out.println("User is logged in");
-			System.out.println("Start File Upload");
+				//Start File Upload
 				FileObject xmlfile = FileUpload.uploadFile(request);
 				System.out.println("XML File: "+xmlfile.toString());
 				System.out.println("File Upload successfully");
@@ -50,12 +49,23 @@ public class ImportAction implements IAction
 					errorList.add(xmlfile.getMessage());
 					return "import.jsp";
 				}
-				System.out.println("Controller initiation"); 
+				//Controller initiation 
 				Controller controller =new Controller(xmlfile.getFile(), getInserter(request), new File(xsdfile));
-				System.out.println("Start execute");
+				//Start execute
 				Map<String, List<String>> errors = controller.execute();
 				
-				
+				//print out execute list
+				errorList.add(
+						"<center>"+
+								"<form method =\"post\" name = \"import\" action=\"import.jsp\">"+ 
+									"<input type=\"submit\" name=\"Submit\" value=\"Back to import\"/>"+
+								"</form>"+
+						"</center>"+
+						"<center>"+
+								"<form method =\"post\" name = \"import\" action=\"welcome.jsp\">"+ 
+									"<input type=\"submit\" name=\"Submit\" value=\"Back to welcome\"/>"+
+								"</form>"+
+						"</center>");
 				for (Map.Entry<String, List <String>> error: errors.entrySet())
 				{
 					if(error.getValue().size() > 0){
@@ -68,7 +78,7 @@ public class ImportAction implements IAction
 						}
 					}
 				}
-				return "import.jsp";
+				return "result.jsp";
 		}
 		else
 			// redirect to the login page
