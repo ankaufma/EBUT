@@ -55,17 +55,6 @@ public class ImportAction implements IAction
 				Map<String, List<String>> errors = controller.execute();
 				
 				//print out execute list
-				errorList.add(
-						"<center>"+
-								"<form method =\"post\" name = \"import\" action=\"import.jsp\">"+ 
-									"<input type=\"submit\" name=\"Submit\" value=\"Back to import\"/>"+
-								"</form>"+
-						"</center>"+
-						"<center>"+
-								"<form method =\"post\" name = \"import\" action=\"welcome.jsp\">"+ 
-									"<input type=\"submit\" name=\"Submit\" value=\"Back to welcome\"/>"+
-								"</form>"+
-						"</center>");
 				for (Map.Entry<String, List <String>> error: errors.entrySet())
 				{
 					if(error.getValue().size() > 0){

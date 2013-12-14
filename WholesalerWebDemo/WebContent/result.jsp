@@ -9,5 +9,15 @@
 <body>
 <%@ include file="header.jsp" %>
 <%@ include file="error.jsp" %>
+	<center>
+		<form method ="post" name = "import" action="import.jsp"> 
+			<input type="submit" name="Submit" value="Back to import"/>
+		</form>
+	</center>
+	<center>
+		<form method ="post" name = "import" action="welcome.jsp"> 
+			<input type="submit" name="Submit" value="Back to welcome"/>
+		</form>
+	</center>
 </body>
 </html>
