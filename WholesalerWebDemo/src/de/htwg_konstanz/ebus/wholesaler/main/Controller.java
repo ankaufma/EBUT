@@ -28,7 +28,7 @@ public class Controller {
 	HashMap<String, List<String>> results;
 	
 	/**
-	 * Constructor
+	 * Constructor for Controller initialization
 	 * @param xmlfile
 	 * @param inserter
 	 * @param schemafile
@@ -46,9 +46,12 @@ public class Controller {
 	 * start of validation and insert
 	 * @return
 	 */
+	//the map return later the updated or new files and if there have any errors appeared
 	public Map<String, List<String>> execute()
 	{
+		//if the validation return no exception -->
 		if(!validate()) return results;
+		// you can continue with the insert into db
 		insert();
 		return results;
 	}
@@ -60,12 +63,14 @@ public class Controller {
 	{	
 		try 
 		{
+			//initialize the schema file from local directory
 			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			URL schemaURL = new File("C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd").toURI().toURL();
 			Schema schema = sf.newSchema(schemaURL); 
 			Validator validator = schema.newValidator();
 			MyErrorHandler errHandler = new MyErrorHandler();
 			validator.setErrorHandler(errHandler);
+			//validation of the xml file regarding to the schemata 
 			validator.validate(new StreamSource(xmlfile));
 			if(!errHandler.hasErrors())
 			{
@@ -97,7 +102,7 @@ public class Controller {
 	 */
 	private void insert()
 	{
-	
+	// inserter return the resualt map and starts the insert with the right dbInserter
 	Map<String, List<String>> tmp = inserter.insertIntoDatabase(xmlfile);
 	
 	if(!tmp.get(Errors.ERRORS).isEmpty())

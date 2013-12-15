@@ -16,13 +16,15 @@ public class FileUpload {
 	}
 
 	public static FileObject uploadFile(HttpServletRequest request) {
+		//factory and servlet for uploading file
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		File file = null;
 		try {
-			System.out.println("Start parsing request");
+			//start parsing request
 			List<FileItem> items = upload.parseRequest(request);
-			System.out.println("End parsing request");
+			//finished parsing request
+			//error message, if no file to upload was chosen
 			if (noFileChosen(items)) {
 				return new FileObject(null, "No File was chosen!", false);
 			}
@@ -30,19 +32,20 @@ public class FileUpload {
 			FileItem item = items.get(0);
 			System.out.println("File name: "+ item.getName());
 			String fileName = item.getName();
+			//check if the right file was chosen
 			if (!fileName.endsWith(".xml")) {
 				return new FileObject(null, "Your chosen File " + " "
 						+ fileName + " was not of type XML!", false);
 			}
-			System.out.println("file initialization");
+			//file initialization"
+			//file directory for interim storage
 			file = new File("C:\\Temp\\"+fileName);
 			System.out.println("File Name: "+fileName);
 			System.out.println("successful initialization");
-			System.out.println("start file writing");
-			// Hier gibt es Probleme!
+			//start file writing
 			item.write(file);
 			System.out.println("successfully writing of file");
-
+		// catching all exceptions
 		} catch (FileUploadException e) {
 			e.printStackTrace();
 			return new FileObject(null, "Error while uploading file!", false);
@@ -52,7 +55,7 @@ public class FileUpload {
 		}
 		return new FileObject(file, "", true);
 	}
-
+	//method for no file
 	private static boolean noFileChosen(List<FileItem> items) {
 		return items.get(0).getName().isEmpty() && !items.get(0).isFormField();
 	}

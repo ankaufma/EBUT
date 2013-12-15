@@ -47,13 +47,13 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 	{
         Document dom = null;
 		try {
-			System.out.println("Document Builder Factory initialization");
+			//Document Builder Factory initialization
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			System.out.println("Factory successful created");
-			System.out.println("Create Document Builder");
+			//Create Document Builder
 	        DocumentBuilder builder = factory.newDocumentBuilder();
 	        System.out.println("Document Builder created");
-	        System.out.println("Start Parsing");
+	        //Start Parsing
 	        dom = builder.parse(xmlfile);
 	        System.out.println("Dom successfully parsed");
 	        System.out.println("XML File exists? answer: "+xmlfile.exists());
@@ -75,17 +75,18 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 		}
 		
 		//map with updated and new products
-		System.out.println("Start initialize Result Map");
+		//start initialize Result Map
 		HashMap<String, List<String>> resultMap = initResultMap();
 		System.out.println("Result Map created");
+		// lists for the output
 		ArrayList<String> updatedProducts = new ArrayList<String>();
 		ArrayList<String> newProducts = new ArrayList<String>();
-		System.out.println("get dom root element");
+		//get dom root element
 		Element root = dom.getDocumentElement();
 		System.out.println("Root: "+ root.getNodeValue());
 		
 		// Supplier
-		System.out.println("get supplier from dom root");
+		//get supplier from dom root
 		BOSupplier supplier = getSupplier(root);
 		
 		if (supplier == null){
@@ -93,11 +94,11 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 			return resultMap;
 		}
 		
-		// find all articles
+		// routine to find all articles
 		NodeList articles = root.getElementsByTagName("ARTICLE");
 		for (int i = 0; i < articles.getLength(); i++) {
 			Element article = (Element) articles.item(i);
-			
+			//get the supported elements by tag name
 			NodeList aidList = article.getElementsByTagName("SUPPLIER_AID");
 			NodeList descriptionShortList = article.getElementsByTagName("DESCRIPTION_SHORT");
 			NodeList descriptionLongList = article.getElementsByTagName("DESCRIPTION_LONG");
@@ -111,7 +112,7 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 			product.setOrderNumberSupplier(aidList.item(0).getFirstChild().getNodeValue());
 			
 			ProductBOA pb = ProductBOA.getInstance();
-
+			//find all products
 			List<BOProduct> listeBOProduct = pb.findAll();
 			
 			boolean neu = true;
@@ -123,11 +124,16 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 					}
 				}
 			}
+			// if there are new products
 			if(neu) {
+				//save it to db
 				pb.saveOrUpdate(product);
+				//calculate the sales price with 100% gain
 				newPrice(article, product);
+				//add short description
 				newProducts.add(product.getShortDescription());
 			} else {
+				//if the product still exists --> update the product on db and calculate the sales price
 				ProductBOA.getInstance().delete(product);
 				_BaseBOA.getInstance().commit();
 				pb.saveOrUpdate(product);
@@ -137,6 +143,7 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 		}
 		resultMap.put(Errors.NEW_PRODUCTS, newProducts);
 		resultMap.put(Errors.UPDATED_PRODUCTS, updatedProducts);
+		// return the resulat map with errors, new products and updated products
 		return resultMap;
 	}
 
@@ -165,7 +172,7 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 
 
 	/**
-	 * saves a prices for an article
+	 * saves prices for an article
 	 * @param article element of the document
 	 * @param bp the product of which prices will be saved
 	 */
@@ -198,10 +205,10 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 				String priceType = articlePriceElement.getAttribute("price_type");
 				boPrice.setPricetype(priceType);
 
-				// save the Purchase Price
+				// save the purchase price
 				PriceBOA.getInstance().saveOrUpdate(boPrice);
 
-				// save Sales Price with 100% gain
+				// save sales price with 100% gain
 				BOSalesPrice salesPreis = new BOSalesPrice();
 				salesPreis.setAmount(priceAmount.multiply(new BigDecimal(2)));
 				salesPreis.setCountry(country);

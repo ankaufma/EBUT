@@ -25,7 +25,7 @@ public class ImportAction implements IAction
 	String xsdfile="";
 	IDatabaseInserter inserter;
 	
-
+	//constructor
 	public ImportAction()
 	{
 		super();
@@ -46,6 +46,7 @@ public class ImportAction implements IAction
 				System.out.println("XML File Worked Status: "+ xmlfile.isWorked());
 				if (!xmlfile.isWorked())
 				{
+					//add error to error list
 					errorList.add(xmlfile.getMessage());
 					return "import.jsp";
 				}
@@ -67,31 +68,19 @@ public class ImportAction implements IAction
 						}
 					}
 				}
+				//return the result map on an other page
 				return "result.jsp";
 		}
 		else
 			// redirect to the login page
 			return "login.jsp";				
 	}
-
-   /**
-   * Each action itself decides if it is responsible to process the corrensponding request or not.
-   * This means that the {@link ControllerServlet} will ask each action by calling this method if it
-   * is able to process the incoming action request, or not.
-   * 
-   * @param actionName the name of the incoming action which should be processed
-   * @return true if the action is responsible, else false
-   */
 	public boolean accepts(String actionName)
 	{
 		return actionName.equalsIgnoreCase(ACTION_IMPORT);
 	}
-
-	/**
-	 * 
-	 * @param request
-	 * @return an instance of an IDatabaseInserter
-	 */
+	//get the correckt Database inserter --> in this case the DOMinserter
+	//but it's optional to use an other inserter --> you only have to implement the interfase and create your own inserter
 	public IDatabaseInserter getInserter(HttpServletRequest request)
 	{
 		return new DOMDatabaseInserter();
