@@ -229,10 +229,13 @@ public class ConvertToBMECat {
 		try {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer(new StreamSource("C:\\Temp\\BMECatToWeb.xslt"));
+			FileOutputStream fos = new FileOutputStream("C:\\xampp\\tomcat\\webapps\\WholesalerWebDemo\\"+filename+".html");
 			transformer.transform(
 					new StreamSource("C:\\xampp\\tomcat\\webapps\\WholesalerWebDemo\\"+filename),
-					new StreamResult(new FileOutputStream("C:\\xampp\\tomcat\\webapps\\WholesalerWebDemo\\"+filename+".html"))
+					new StreamResult(fos)
 					);
+			fos.flush();
+			fos.close();
 		} catch (TransformerConfigurationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -240,6 +243,9 @@ public class ConvertToBMECat {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

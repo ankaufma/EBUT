@@ -14,8 +14,8 @@ public class DropFiles extends Thread {
 
 	@Override
 	public void run() {
-		File fi = new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+this.filename);
-		File site = new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+this.filename+".html");
+		File fi = new File("C:\\xampp\\tomcat\\webapps\\WholesalerWebDemo\\"+this.filename);
+		File site = new File("C:\\xampp\\tomcat\\webapps\\WholesalerWebDemo\\"+this.filename+".html");
 		
 		try {
 			//Nach 120 Sekunden schlaf, versuche erzeugte Dateien zu löschen
