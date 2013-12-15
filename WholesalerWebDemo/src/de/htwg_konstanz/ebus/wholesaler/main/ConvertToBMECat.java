@@ -176,7 +176,7 @@ public class ConvertToBMECat {
 		DOMSource source = new DOMSource(doc);
 		validateDocument(doc);
 		filename = "BMECat"+System.currentTimeMillis()+".xml";
-		StreamResult result = new StreamResult(new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+filename));
+		StreamResult result = new StreamResult(new File("C:\\xampp\\tomcat\\webapps\\WholesalerWebDemo\\"+filename));
 		try {
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
@@ -230,8 +230,8 @@ public class ConvertToBMECat {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer(new StreamSource("C:\\Temp\\BMECatToWeb.xslt"));
 			transformer.transform(
-					new StreamSource("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+filename),
-					new StreamResult(new FileOutputStream("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+filename+".html"))
+					new StreamSource("C:\\xampp\\tomcat\\webapps\\WholesalerWebDemo\\"+filename),
+					new StreamResult(new FileOutputStream("C:\\xampp\\tomcat\\webapps\\WholesalerWebDemo\\"+filename+".html"))
 					);
 		} catch (TransformerConfigurationException e1) {
 			// TODO Auto-generated catch block
