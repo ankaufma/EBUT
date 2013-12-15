@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -49,28 +51,9 @@ public class ConvertToBMECat {
 		this.productList = productList;
 	}
 	
-	private void validateDocument(Document xmlDOM) {
-		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); 
-		URL schemaURL;
-		try {
-			schemaURL = new File("C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd").toURI().toURL();
-			Schema schema = sf.newSchema(schemaURL); 
-			Validator validator = schema.newValidator();
-			DOMSource source = new DOMSource(xmlDOM);
-			validator.validate(source);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	public String buildBMECat() throws ParserConfigurationException, TransformerConfigurationException {
+		// Too much Code for Building a DOM...
+		// Treebuild tried to be chronologic
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 		Document doc = docBuilder.newDocument();
@@ -102,7 +85,7 @@ public class ConvertToBMECat {
 		catName.appendChild(doc.createTextNode("Neuer Katalog"));
 		catalog.appendChild(dTime);
 		dTime.appendChild(datum);
-		datum.appendChild(doc.createTextNode("2013-05-01"));
+		datum.appendChild(doc.createTextNode(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
 		header.appendChild(supplier);
 		supplier.appendChild(supName);
 		supName.appendChild(doc.createTextNode("Gianni und Andy Co. KG"));
@@ -129,6 +112,9 @@ public class ConvertToBMECat {
 		//Attr[] type = new Attr[productList.size()];
 		//Element[] aIdTo = doc.createElement("ART_ID_TO"); 
 		
+		
+		// Contains all obligate Nodes from the shema
+		// added further 3 not obligate Elements, wicht were checked by IfExistsAppendChild-Method
 		for(BOProduct product: this.productList) {
 			j++;
 			article[i] = doc.createElement("ARTICLE");
@@ -147,10 +133,12 @@ public class ConvertToBMECat {
 			//ean[i] = doc.createElement("EAN");
 			//aDetails[i].appendChild(ean[i]);
 			//ean[i].appendChild(doc.createTextNode("1234"));
-			//supAltAID[i] = doc.createElement("SUPPLIER_ALT_AID");
+			supAltAID[i] = doc.createElement("SUPPLIER_ALT_AID");
+			ifExistsAppendChild(product.getMaterialNumber().toString(), aDetails[i], supAltAID[i], doc);
 			//aDetails[i].appendChild(supAltAID[i]);
 			//supAltAID[i].appendChild(doc.createTextNode(product.getMaterialNumber().toString()));
-			//manuName[i] = doc.createElement("MANUFACTURER_NAME");
+			manuName[i] = doc.createElement("MANUFACTURER_NAME");
+			ifExistsAppendChild(product.getManufacturer(), aDetails[i], manuName[i], doc);
 			//aDetails[i].appendChild(manuName[i]);
 			//manuName[i].appendChild(doc.createTextNode(product.getManufacturer()));
 			artOrderDetails[i] = doc.createElement("ARTICLE_ORDER_DETAILS");
@@ -172,8 +160,9 @@ public class ConvertToBMECat {
 			//aPrice[i].appendChild(pCurrency[i]);
 			//pCurrency[i].appendChild(doc.createTextNode("EUR"));
 			tax[i] = doc.createElement("TAX");
-			aPrice[i].appendChild(tax[i]);
-			tax[i].appendChild(doc.createTextNode(product.getSalesPrice(new BOCountry(new Country("DE"))).getTaxrate().toString()));
+			ifExistsAppendChild(product.getSalesPrice(new BOCountry(new Country("DE"))).getTaxrate().toString(), aPrice[i], tax[i], doc);
+			//aPrice[i].appendChild(tax[i]);
+			//tax[i].appendChild(doc.createTextNode(product.getSalesPrice(new BOCountry(new Country("DE"))).getTaxrate().toString()));
 			//territory[i] = doc.createElement("TERRITORY");
 			//aPrice[i].appendChild(territory[i]);
 			//territory[i].appendChild(doc.createTextNode(new Country("DE").getIsocode()));
@@ -199,10 +188,47 @@ public class ConvertToBMECat {
 		return filename;
 	}
 	
-	public void transfromForWeb(Document doc, String filename) {
+	
+	// if a Database Element isn't null, create that approbriate Node with its TextNode
+	private void ifExistsAppendChild(String name, Element parent, Element child, Document doc) {
+		if(name != null) {
+			parent.appendChild(child);
+			child.appendChild(doc.createTextNode(name));
+		}
+	}
+	
+	// Explains its self
+	public int getCountOfArticles() {
+		return this.j;
+	}
+	
+	// Validate new XML-Document build from the DOC-Tree
+	private void validateDocument(Document xmlDOM) {
+		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); 
+		URL schemaURL;
+		try {
+			schemaURL = new File("C:\\Temp\\bmecat_new_catalog_1_2_simple_without_NS.xsd").toURI().toURL();
+			Schema schema = sf.newSchema(schemaURL); 
+			Validator validator = schema.newValidator();
+			DOMSource source = new DOMSource(xmlDOM);
+			validator.validate(source);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private void transfromForWeb(Document doc, String filename) {
 		try {
 			TransformerFactory factory = TransformerFactory.newInstance();
-			Transformer transformer = factory.newTransformer(new StreamSource("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\wsdl\\BMECatToWeb.xslt"));
+			Transformer transformer = factory.newTransformer(new StreamSource("C:\\Temp\\BMECatToWeb.xslt"));
 			transformer.transform(
 					new StreamSource("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+filename),
 					new StreamResult(new FileOutputStream("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+filename+".html"))
@@ -218,10 +244,5 @@ public class ConvertToBMECat {
 			e.printStackTrace();
 		}
 	}
-	
-	public int getCountOfArticles() {
-		return this.j;
-	}
-	
 
 }

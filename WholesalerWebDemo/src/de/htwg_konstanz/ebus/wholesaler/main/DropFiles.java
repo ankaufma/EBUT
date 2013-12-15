@@ -18,9 +18,11 @@ public class DropFiles extends Thread {
 		File site = new File("C:\\Users\\AK\\git\\EBUT\\WholesalerWebDemo\\WebContent\\"+this.filename+".html");
 		
 		try {
-			Thread.sleep(60000);
+			//Nach 120 Sekunden schlaf, versuche erzeugte Dateien zu löschen
+			Thread.sleep(120000);
 			if(fi.delete()) System.out.println("File Deleted");
 			else System.out.println("File couldn't be deleted");
+			//Probleme bei der XHTML-Seite, deshalb, wenn löschen fehlschlägt, versuche alle 5 Sekunden Datei erneut zu löschen 
 			while(!site.delete()) {
 				System.out.println("File couldn't be deleted");
 				site.delete();
@@ -28,7 +30,6 @@ public class DropFiles extends Thread {
 			}
 			System.out.println("File has actually been deleted...");
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

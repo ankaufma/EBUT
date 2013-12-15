@@ -26,5 +26,9 @@ and are available for you for <b>two Minutes</b>...
 	Or go directly to the Web-View
 	<a href="http://localhost:8080/WholesalerWebDemo/<%= request.getParameter("filename") %>.html">there!</a>
 </p>
+<p>
+	Or you can Validate this file via W3C-Validator-Api here
+	<a target="_blank" href="http://validator.w3.org/check?uri=http://www.vfl-fluorn-fussball.de/BMECat1387133107339.xml.html">here!</a>
+</p>
 </body>
 </html>
