@@ -126,10 +126,11 @@ public class ConvertToBMECat {
 			article[i].appendChild(aDetails[i]);
 			descShort[i] = doc.createElement("DESCRIPTION_SHORT");
 			aDetails[i].appendChild(descShort[i]);
-			descLong[i] = doc.createElement("DESCRIPTION_LONG");
 			descShort[i].appendChild(doc.createTextNode(product.getShortDescription()));
-			aDetails[i].appendChild(descLong[i]);
-			descLong[i].appendChild(doc.createTextNode(product.getLongDescription()));
+			descLong[i] = doc.createElement("DESCRIPTION_LONG");
+			ifExistsAppendChild(product.getLongDescription(), aDetails[i], descLong[i], doc);
+			//aDetails[i].appendChild(descLong[i]);
+			//descLong[i].appendChild(doc.createTextNode(product.getLongDescription()));
 			//ean[i] = doc.createElement("EAN");
 			//aDetails[i].appendChild(ean[i]);
 			//ean[i].appendChild(doc.createTextNode("1234"));
@@ -151,11 +152,11 @@ public class ConvertToBMECat {
 			aPrice[i] = doc.createElement("ARTICLE_PRICE");
 			aPriceDetails[i].appendChild(aPrice[i]);
 			priceType[i] = doc.createAttribute("price_type");
-			priceType[i].setValue("net_list");
+			priceType[i].setValue("net_customer_exp");
 			pAmount[i] = doc.createElement("PRICE_AMOUNT");
 			aPrice[i].setAttributeNode(priceType[i]);
 			aPrice[i].appendChild(pAmount[i]);
-			pAmount[i].appendChild(doc.createTextNode(product.getSalesPrice(new BOCountry(new Country("DE"))).getAmount().toString()));
+			pAmount[i].appendChild(doc.createTextNode(product.getSalesPrices().get(0).getAmount().toString()));
 			//pCurrency[i] = doc.createElement("PRICE_CURRENCY");
 			//aPrice[i].appendChild(pCurrency[i]);
 			//pCurrency[i].appendChild(doc.createTextNode("EUR"));

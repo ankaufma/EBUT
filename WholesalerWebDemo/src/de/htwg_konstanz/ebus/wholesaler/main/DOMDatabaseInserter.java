@@ -27,6 +27,7 @@ import de.htwg_konstanz.ebus.framework.wholesaler.api.boa.PriceBOA;
 import de.htwg_konstanz.ebus.framework.wholesaler.api.boa.ProductBOA;
 import de.htwg_konstanz.ebus.framework.wholesaler.api.boa.SupplierBOA;
 import de.htwg_konstanz.ebus.framework.wholesaler.api.boa._BaseBOA;
+import de.htwg_konstanz.ebus.framework.wholesaler.vo.Country;
 
 
 public class DOMDatabaseInserter implements IDatabaseInserter
@@ -99,14 +100,19 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 		for (int i = 0; i < articles.getLength(); i++) {
 			Element article = (Element) articles.item(i);
 			//get the supported elements by tag name
-			NodeList aidList = article.getElementsByTagName("SUPPLIER_AID");
-			NodeList descriptionShortList = article.getElementsByTagName("DESCRIPTION_SHORT");
-			NodeList descriptionLongList = article.getElementsByTagName("DESCRIPTION_LONG");
-			
 			BOProduct product = new BOProduct();
 			
+			NodeList descriptionShortList = article.getElementsByTagName("DESCRIPTION_SHORT");
 			product.setShortDescription(descriptionShortList.item(0).getFirstChild().getNodeValue());
-			product.setLongDescription(descriptionLongList.item(0).getFirstChild().getNodeValue());
+			if(article.getElementsByTagName("DESCRIPTION_LONG").getLength() > 0) {
+				NodeList descriptionLongList = article.getElementsByTagName("DESCRIPTION_LONG");
+				product.setLongDescription(descriptionLongList.item(0).getFirstChild().getNodeValue());
+			}
+			if(article.getElementsByTagName("MANUFACTURER_NAME").getLength() > 0) {
+				NodeList manu = article.getElementsByTagName("MANUFACTURER_NAME");
+				product.setManufacturer(manu.item(0).getFirstChild().getNodeValue());
+			}
+			NodeList aidList = article.getElementsByTagName("SUPPLIER_AID");
 			product.setOrderNumberCustomer(aidList.item(0).getFirstChild().getNodeValue());
 			product.setSupplier(supplier);
 			product.setOrderNumberSupplier(aidList.item(0).getFirstChild().getNodeValue());
@@ -184,6 +190,7 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 			 Element articlePriceElement = (Element) articlePriceList.item(i);
 			 NodeList territoryList = articlePriceElement.getElementsByTagName("TERRITORY");
 
+			 if(territoryList.getLength() > 0) {
 			 for (int j = 0; j < territoryList.getLength(); j++) {
 				BOPurchasePrice boPrice = new BOPurchasePrice();
 				BOCountry country = CountryBOA.getInstance().findCountry(territoryList.item(j).getTextContent());
@@ -196,12 +203,20 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 				boPrice.setAmount(priceAmount);
 				boPrice.setLowerboundScaledprice(1);
 
-				NodeList taxes = articlePriceElement.getElementsByTagName("TAX");
+				BigDecimal tax = null;
+				if(articlePriceElement.getElementsByTagName("TAX").getLength() > 0) {
+					System.out.println("tax vorhaden");
+					NodeList taxes = articlePriceElement.getElementsByTagName("TAX");
 
-				Double taxDouble = Double.valueOf(taxes.item(0).getFirstChild().getNodeValue());
-				BigDecimal tax = BigDecimal.valueOf(taxDouble);
+					Double taxDouble = Double.valueOf(taxes.item(0).getFirstChild().getNodeValue());
+					tax = BigDecimal.valueOf(taxDouble);
 				    
-				boPrice.setTaxrate(tax);
+					boPrice.setTaxrate(tax);
+				} else {
+					System.out.println("tax nicht vorhaden");
+					tax = BigDecimal.valueOf(Double.valueOf("0.1900"));
+				}
+				
 				String priceType = articlePriceElement.getAttribute("price_type");
 				boPrice.setPricetype(priceType);
 
@@ -217,6 +232,46 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 				salesPreis.setTaxrate(tax);
 				salesPreis.setPricetype(priceType);
 				PriceBOA.getInstance().saveOrUpdate(salesPreis);
+			 }
+			 } else {
+				 BOPurchasePrice boPrice = new BOPurchasePrice();
+				 boPrice.setCountry(new BOCountry(new Country("DE")));
+				 boPrice.setProduct(bp);
+				 NodeList articlePriceAmountList = articlePriceElement.getElementsByTagName("PRICE_AMOUNT");
+				 Double priceAmountDouble = Double.valueOf(articlePriceAmountList.item(0).getFirstChild().getNodeValue());
+				 BigDecimal priceAmount = BigDecimal.valueOf(priceAmountDouble);
+				 boPrice.setAmount(priceAmount);
+				 boPrice.setLowerboundScaledprice(1);
+				 BigDecimal tax = null;
+					if(articlePriceElement.getElementsByTagName("TAX").getLength() > 0) {
+						System.out.println("tax vorhaden");
+						NodeList taxes = articlePriceElement.getElementsByTagName("TAX");
+
+						Double taxDouble = Double.valueOf(taxes.item(0).getFirstChild().getNodeValue());
+						tax = BigDecimal.valueOf(taxDouble);
+					    
+						boPrice.setTaxrate(tax);
+					} else {
+						System.out.println("tax nicht vorhaden");
+						tax = BigDecimal.valueOf(Double.valueOf(0.1900));
+						System.out.println(tax.toString());
+					}
+					String priceType = articlePriceElement.getAttribute("price_type");
+					boPrice.setPricetype(priceType);
+					System.out.println("Mhh... 1");
+					// save the purchase price
+					//PriceBOA.getInstance().saveOrUpdate(boPrice);
+					System.out.println("Mhh... 2");
+					// save sales price with 100% gain
+					BOSalesPrice salesPreis = new BOSalesPrice();
+					salesPreis.setAmount(priceAmount.multiply(new BigDecimal(2)));
+					salesPreis.setCountry(new BOCountry(new Country("DE")));
+					salesPreis.setProduct(bp);
+					salesPreis.setLowerboundScaledprice(1);
+					System.out.println(tax.toString());
+					salesPreis.setTaxrate(tax);
+					salesPreis.setPricetype(priceType);
+					PriceBOA.getInstance().saveOrUpdate(salesPreis);
 			 }
 		}
 	}
