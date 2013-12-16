@@ -135,7 +135,7 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 				//save it to db
 				pb.saveOrUpdate(product);
 				//calculate the sales price with 100% gain
-				newPrice(article, product);
+				insertPrices(article, product);
 				//add short description
 				newProducts.add(product.getShortDescription());
 			} else {
@@ -143,7 +143,7 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 				ProductBOA.getInstance().delete(product);
 				_BaseBOA.getInstance().commit();
 				pb.saveOrUpdate(product);
-				newPrice(article, product);
+				insertPrices(article, product);
 				updatedProducts.add(product.getShortDescription());
 			}
 		}
@@ -175,106 +175,6 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 		}
 		return supplier;
 	}
-
-
-	/**
-	 * saves prices for an article
-	 * @param article element of the document
-	 * @param bp the product of which prices will be saved
-	 */
-	private void newPrice(Element article, BOProduct bp) {
-		NodeList articlePriceList = article.getElementsByTagName("ARTICLE_PRICE");
-		
-		for (int i = 0; i < articlePriceList.getLength(); i++) {
-			
-			 Element articlePriceElement = (Element) articlePriceList.item(i);
-			 NodeList territoryList = articlePriceElement.getElementsByTagName("TERRITORY");
-
-			 if(territoryList.getLength() > 0) {
-			 for (int j = 0; j < territoryList.getLength(); j++) {
-				BOPurchasePrice boPrice = new BOPurchasePrice();
-				BOCountry country = CountryBOA.getInstance().findCountry(territoryList.item(j).getTextContent());
-				boPrice.setCountry(country);
-				boPrice.setProduct(bp);
-				
-				NodeList articlePriceAmountList = articlePriceElement.getElementsByTagName("PRICE_AMOUNT");
-				Double priceAmountDouble = Double.valueOf(articlePriceAmountList.item(0).getFirstChild().getNodeValue());
-				BigDecimal priceAmount = BigDecimal.valueOf(priceAmountDouble);
-				boPrice.setAmount(priceAmount);
-				boPrice.setLowerboundScaledprice(1);
-
-				BigDecimal tax = null;
-				if(articlePriceElement.getElementsByTagName("TAX").getLength() > 0) {
-					System.out.println("tax vorhaden");
-					NodeList taxes = articlePriceElement.getElementsByTagName("TAX");
-
-					Double taxDouble = Double.valueOf(taxes.item(0).getFirstChild().getNodeValue());
-					tax = BigDecimal.valueOf(taxDouble);
-				    
-					boPrice.setTaxrate(tax);
-				} else {
-					System.out.println("tax nicht vorhaden");
-					tax = BigDecimal.valueOf(Double.valueOf("0.1900"));
-				}
-				
-				String priceType = articlePriceElement.getAttribute("price_type");
-				boPrice.setPricetype(priceType);
-
-				// save the purchase price
-				PriceBOA.getInstance().saveOrUpdate(boPrice);
-
-				// save sales price with 100% gain
-				BOSalesPrice salesPreis = new BOSalesPrice();
-				salesPreis.setAmount(priceAmount.multiply(new BigDecimal(2)));
-				salesPreis.setCountry(country);
-				salesPreis.setProduct(bp);
-				salesPreis.setLowerboundScaledprice(1);
-				salesPreis.setTaxrate(tax);
-				salesPreis.setPricetype(priceType);
-				PriceBOA.getInstance().saveOrUpdate(salesPreis);
-			 }
-			 } else {
-				 BOPurchasePrice boPrice = new BOPurchasePrice();
-				 boPrice.setCountry(new BOCountry(new Country("DE")));
-				 boPrice.setProduct(bp);
-				 NodeList articlePriceAmountList = articlePriceElement.getElementsByTagName("PRICE_AMOUNT");
-				 Double priceAmountDouble = Double.valueOf(articlePriceAmountList.item(0).getFirstChild().getNodeValue());
-				 BigDecimal priceAmount = BigDecimal.valueOf(priceAmountDouble);
-				 boPrice.setAmount(priceAmount);
-				 boPrice.setLowerboundScaledprice(1);
-				 BigDecimal tax = null;
-					if(articlePriceElement.getElementsByTagName("TAX").getLength() > 0) {
-						System.out.println("tax vorhaden");
-						NodeList taxes = articlePriceElement.getElementsByTagName("TAX");
-
-						Double taxDouble = Double.valueOf(taxes.item(0).getFirstChild().getNodeValue());
-						tax = BigDecimal.valueOf(taxDouble);
-					    
-						boPrice.setTaxrate(tax);
-					} else {
-						System.out.println("tax nicht vorhaden");
-						tax = BigDecimal.valueOf(Double.valueOf(0.1900));
-						System.out.println(tax.toString());
-					}
-					String priceType = articlePriceElement.getAttribute("price_type");
-					boPrice.setPricetype(priceType);
-					System.out.println("Mhh... 1");
-					// save the purchase price
-					//PriceBOA.getInstance().saveOrUpdate(boPrice);
-					System.out.println("Mhh... 2");
-					// save sales price with 100% gain
-					BOSalesPrice salesPreis = new BOSalesPrice();
-					salesPreis.setAmount(priceAmount.multiply(new BigDecimal(2)));
-					salesPreis.setCountry(new BOCountry(new Country("DE")));
-					salesPreis.setProduct(bp);
-					salesPreis.setLowerboundScaledprice(1);
-					System.out.println(tax.toString());
-					salesPreis.setTaxrate(tax);
-					salesPreis.setPricetype(priceType);
-					PriceBOA.getInstance().saveOrUpdate(salesPreis);
-			 }
-		}
-	}
 	
 	/**
 	 * initializes the resulting map
@@ -288,5 +188,47 @@ public class DOMDatabaseInserter implements IDatabaseInserter
 		result.put(Errors.UPDATED_PRODUCTS, new ArrayList<String>());
 		result.put(Errors.NEW_PRODUCTS, new ArrayList<String>());
 		return result;
+	}
+	
+	private void insertPrices(Element article, BOProduct bp) {
+		NodeList articlePrices = article.getElementsByTagName("ARTICLE_PRICE");
+		BOSalesPrice salesPrice = new BOSalesPrice();
+		BOPurchasePrice boPrice = new BOPurchasePrice();
+		
+		// Get Price Amount and get if exist Pirce_Type and Tax otherwise set Default like the other parameters (Counter, LowerBoundScaledPrice)
+		// Ugly: SaveOrUpdate-Method overrides multiple prices for the same Product...
+		for (int i = 0; i < articlePrices.getLength(); i++) {
+			Element articlePriceElement = (Element) articlePrices.item(i);
+			NodeList articlePriceAmountList = articlePriceElement.getElementsByTagName("PRICE_AMOUNT");
+			String priceType;
+			if(articlePriceElement.getAttribute("price_type") != null)
+				priceType = articlePriceElement.getAttribute("price_type");
+			else
+				priceType = "net_list";
+			BigDecimal pAmount = BigDecimal.valueOf(Double.valueOf(articlePriceAmountList.item(0).getFirstChild().getNodeValue()));
+			BigDecimal tax;
+			if(articlePriceElement.getElementsByTagName("TAX").getLength() > 0) {
+				NodeList taxes = articlePriceElement.getElementsByTagName("TAX");
+				Double taxDouble = Double.valueOf(taxes.item(0).getFirstChild().getNodeValue());
+				tax = BigDecimal.valueOf(taxDouble);
+			} else {
+				tax = BigDecimal.valueOf(Double.valueOf(0.1900));
+			}
+			salesPrice.setProduct(bp);
+			// The Profit margin is twice as high 
+			salesPrice.setAmount(pAmount.multiply(new BigDecimal(2)));
+			salesPrice.setPricetype(priceType);
+			salesPrice.setTaxrate(tax);
+			salesPrice.setCountry(new BOCountry(new Country("DE")));
+			salesPrice.setLowerboundScaledprice(1);
+			boPrice.setProduct(bp);
+			boPrice.setAmount(pAmount);
+			boPrice.setPricetype(priceType);
+			boPrice.setTaxrate(tax);
+			boPrice.setCountry(new BOCountry(new Country("DE")));
+			boPrice.setLowerboundScaledprice(1);
+			PriceBOA.getInstance().saveOrUpdateSalesPrice(salesPrice);
+			PriceBOA.getInstance().saveOrUpdatePurchasePrice(boPrice);
+		}
 	}
 }

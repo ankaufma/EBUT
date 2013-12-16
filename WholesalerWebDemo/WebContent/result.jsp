@@ -19,5 +19,8 @@
 			<input type="submit" name="Submit" value="Back to welcome"/>
 		</form>
 	</center>
+<c:if test="${ not empty sessionScope.errorList }">
+	<c:remove var="errorList" scope="session"/>
+</c:if>
 </body>
 </html>
